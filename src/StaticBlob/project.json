@@ -1,0 +1,9 @@
+{
+  "frameworks": {
+    "net46": {
+      "dependencies": {
+        "King.Azure": "2.0.19"
+      }
+    }
+  }
+}
