@@ -72,10 +72,6 @@
                             "value": "~1"
                         },
                         {
-                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
-                            "value": "6.5.0"
-                        },
-                        {
                             "name": "DefaultPage",
                             "value": "index.htm"
                         },
