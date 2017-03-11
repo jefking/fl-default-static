@@ -1,15 +1,18 @@
 using System.Net;
 using System.Net.Http.Headers;
-using King.Azure;
+using King.Azure.Data;
 
 static string defaultPage = GetEnvironmentVariable("defaultPage") ?? "index.htm";
 static string container = GetEnvironmentVariable("Container") ?? "www";
+static string connection = GetEnvironmentVariable("DataStore");
 
 public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
 {
     var path = req.GetQueryNameValuePairs()
         .FirstOrDefault(q => string.Compare(q.Key, "file", true) == 0)
         .Value ?? defaultPage;
+
+    var container = new Container(container, connection);
 
     return new HttpResponseMessage(HttpStatusCode.Redirect)
     {
