@@ -14,7 +14,7 @@ public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
 
     var c = new Container(container, connection);
 
-    var r new HttpResponseMessage(HttpStatusCode.Redirect);
+    var r = new HttpResponseMessage(HttpStatusCode.Redirect);
     r.Content.Headers.Location = new Uri(path);
     return r;
 }
