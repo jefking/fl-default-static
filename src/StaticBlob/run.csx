@@ -1,14 +1,29 @@
-#r "System.Drawing"
-
-using System;
-using System.Drawing;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.IO;
 using King.Azure;
 
-public static void Run(TraceWriter log)
+const string staticFilesFolder = "www";
+static string defaultPage = GetEnvironmentVariable("defaultPage") ??  "index.htm";
+
+public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
 {
-    var DefaultPage = Env("DefaultPage");
-    var connectionString = Env("DataStore");
-   
+    try
+    {
+        var filePath = GetFilePath(req, log);
+
+        var response = new HttpResponseMessage(HttpStatusCode.OK);//REDIRECT NOT STREAM
+        var stream = new FileStream(filePath, FileMode.Open);
+        response.Content = new StreamContent(stream);
+        response.Content.Headers.ContentType = new MediaTypeHeaderValue(GetMimeType(filePath));
+        return response;
+    }
+    catch
+    {
+        return new HttpResponseMessage(HttpStatusCode.NotFound);
+    }
 }
 
-private static string Env(string name) => System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
+private static string GetEnvironmentVariable(string name)
+    => System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
