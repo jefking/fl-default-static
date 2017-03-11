@@ -4,25 +4,21 @@ using System.Threading.Tasks;
 using System.IO;
 using King.Azure;
 
-const string staticFilesFolder = "www";
-static string defaultPage = GetEnvironmentVariable("defaultPage") ??  "index.htm";
+static string defaultPage = GetEnvironmentVariable("defaultPage") ?? "index.htm";
 
 public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
 {
-    try
-    {
-        var filePath = GetFilePath(req, log);
+    var pathValue = req.GetQueryNameValuePairs()
+        .FirstOrDefault(q => string.Compare(q.Key, "file", true) == 0)
+        .Value;
 
-        var response = new HttpResponseMessage(HttpStatusCode.OK);//REDIRECT NOT STREAM
-        var stream = new FileStream(filePath, FileMode.Open);
-        response.Content = new StreamContent(stream);
-        response.Content.Headers.ContentType = new MediaTypeHeaderValue(GetMimeType(filePath));
-        return response;
-    }
-    catch
-    {
-        return new HttpResponseMessage(HttpStatusCode.NotFound);
-    }
+    var path = pathValue ?? defaultPage;
+
+    var response = new HttpResponseMessage(HttpStatusCode.OK);//REDIRECT NOT STREAM
+    var stream = new FileStream(filePath, FileMode.Open);
+    response.Content = new StreamContent(stream);
+    response.Content.Headers.ContentType = new MediaTypeHeaderValue(GetMimeType(filePath));
+    return response;
 }
 
 private static string GetEnvironmentVariable(string name)
