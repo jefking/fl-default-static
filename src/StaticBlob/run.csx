@@ -8,11 +8,9 @@ static string defaultPage = GetEnvironmentVariable("defaultPage") ?? "index.htm"
 
 public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
 {
-    var pathValue = req.GetQueryNameValuePairs()
+    var path = req.GetQueryNameValuePairs()
         .FirstOrDefault(q => string.Compare(q.Key, "file", true) == 0)
-        .Value;
-
-    var path = pathValue ?? defaultPage;
+        .Value ?? defaultPage;
 
     var response = new HttpResponseMessage(HttpStatusCode.OK);//REDIRECT NOT STREAM
     var stream = new FileStream(filePath, FileMode.Open);
