@@ -10,6 +10,7 @@
         },
         "defaultPage": {
             "type": "string",
+            "defaultValue": "index.htm",
             "metadata": {
                 "description": "Default web page to show when directory is accessed."
             }
