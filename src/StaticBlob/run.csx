@@ -12,7 +12,7 @@ public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
         .FirstOrDefault(q => string.Compare(q.Key, "file", true) == 0)
         .Value ?? defaultPage;
 
-    var container = new Container(container, connection);
+    var c = new Container(container, connection);
 
     return new HttpResponseMessage(HttpStatusCode.Redirect)
     {
