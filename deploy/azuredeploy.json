@@ -14,6 +14,13 @@
             "metadata": {
                 "description": "Default web page to show when directory is accessed."
             }
+        },
+        "Container": {
+            "type": "string",
+            "defaultValue": "www",
+            "metadata": {
+                "description": "Default web page to show when directory is accessed."
+            }
         }
     },
     "variables": {
@@ -81,6 +88,10 @@
                         {
                             "name": "DefaultPage",
                             "value": "[parameters('defaultPage')]"
+                        },
+                        {
+                            "name": "Container",
+                            "value": "[parameters('Container')]"
                         },
                         {
                             "name":"DataStore",

@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using King.Azure;
 
 static string defaultPage = GetEnvironmentVariable("defaultPage") ?? "index.htm";
+static string container = GetEnvironmentVariable("Container") ?? "www";
 
 public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
 {
