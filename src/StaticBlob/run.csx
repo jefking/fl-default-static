@@ -12,11 +12,10 @@ public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
         .FirstOrDefault(q => string.Compare(q.Key, "file", true) == 0)
         .Value ?? defaultPage;
 
-    var response = new HttpResponseMessage(HttpStatusCode.OK);//REDIRECT NOT STREAM
-    var stream = new FileStream(filePath, FileMode.Open);
-    response.Content = new StreamContent(stream);
-    response.Content.Headers.ContentType = new MediaTypeHeaderValue(GetMimeType(filePath));
-    return response;
+    return new HttpResponseMessage(HttpStatusCode.Redirect)
+    {
+        Content.Headers.Location = new Uri(path)
+    };
 }
 
 private static string GetEnvironmentVariable(string name)
