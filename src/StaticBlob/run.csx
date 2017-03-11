@@ -1,7 +1,5 @@
 using System.Net;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.IO;
 using King.Azure;
 
 static string defaultPage = GetEnvironmentVariable("defaultPage") ?? "index.htm";
