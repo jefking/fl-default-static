@@ -14,10 +14,9 @@ public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
 
     var c = new Container(container, connection);
 
-    return new HttpResponseMessage(HttpStatusCode.Redirect)
-    {
-        Content.Headers.Location = new Uri(path)
-    };
+    var r new HttpResponseMessage(HttpStatusCode.Redirect);
+    r.Content.Headers.Location = new Uri(path)
+    return r;
 }
 
 private static string GetEnvironmentVariable(string name)
