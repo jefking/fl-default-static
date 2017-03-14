@@ -14,6 +14,8 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         .FirstOrDefault(q => string.Compare(q.Key, "file", true) == 0)
         .Value ?? defaultPage;
 
+        log.Info(path);
+
     var c = new Container(container, connection);
     var exists = await c.Exists(req.RequestUri.AbsolutePath);
 
