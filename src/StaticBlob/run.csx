@@ -14,12 +14,10 @@ public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
 
     var c = new Container(container, connection);
 
-    var r = new HttpResponseMessage(HttpStatusCode.Redirect)
-    {
-        Status = "301 Moved Permanently",
-    };
-   // r.Content.Headers.Location = new Uri(path);
-    r.AddHeader("Location", "http://www.google.com");
+    var r = new HttpResponseMessage(HttpStatusCode.Redirect);
+
+    r.Headers.Location = new Uri("http://www.google.com");
+    
     return r;
 }
 
