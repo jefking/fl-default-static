@@ -4,7 +4,7 @@ using King.Azure.Data;
 
 static string defaultPage = GetEnvironmentVariable("defaultPage") ?? "index.htm";
 static string container = GetEnvironmentVariable("Container") ?? "www";
-static string rootUrl = "https://todaystestisrvqvzbftfzw.blob.core.windows.net";
+static string rootUrl = "https://todaystestisrvqvzbftfzw.blob.core.windows.net/";
 
 static string connection = GetEnvironmentVariable("DataStore");
 
@@ -17,7 +17,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     var c = new Container(container, connection);
     var exists = await c.Exists(req.RequestUri.AbsolutePath);
 
-    var location = new Uri(rootUrl);
+    var location = new Uri(rootUrl + container);
 
     // if (exists)
     // {
