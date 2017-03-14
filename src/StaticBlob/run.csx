@@ -17,20 +17,12 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     var c = new Container(container, connection);
     var exists = await c.Exists(req.RequestUri.AbsolutePath);
 
-    var location = new Uri(rootUrl + container);
-
-    // if (exists)
-    // {
-    //     location = req.RequestUri.AbsolutePath;
-    // }
-    // else
-    // {
-    //     location = new Uri(req.RequestUri.AbsolutePath, defaultPage);
-    // }
+    var l = exists ? rootUrl + container + req.RequestUri.AbsolutePath
+                    : rootUrl + container + req.RequestUri.AbsolutePath + '/' + defaultPage;
 
     var r = new HttpResponseMessage(HttpStatusCode.Redirect);
 
-    r.Headers.Location = location;
+    r.Headers.Location = new Uri(l);
 
     return r;
 }
