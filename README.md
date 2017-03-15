@@ -1,5 +1,5 @@
 # Server Default Static
-
+Defaults to a page; when a page is not specfied; mainly to get around how blob storage handles requests.
 
 ## Quick Deploy to Azure
 
@@ -10,7 +10,8 @@
 
 ## Application settings
 
-- **DataStore** - The storage account
+- **Root** - Root of the site.
+- **DefaultPage** - index.htm
 
 ## Running Locally
 

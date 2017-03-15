@@ -15,5 +15,4 @@ public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
     return r;
 }
 
-private static string GetEnvironmentVariable(string name)
-    => System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
+private static string GetEnvironmentVariable(string name) => System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
