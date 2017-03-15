@@ -10,7 +10,6 @@ public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)
         .FirstOrDefault(q => string.Compare(q.Key, "file", true) == 0)
         .Value ?? defaultPage;
 
-    //var c = new Container(container, connection);
     var r = new HttpResponseMessage(HttpStatusCode.Redirect);
 
     r.Headers.Location = new Uri(root + req.RequestUri.AbsolutePath + '/' + path);
