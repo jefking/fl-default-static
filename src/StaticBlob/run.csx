@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 
-static string defaultPage = GetEnvironmentVariable("defaultPage") ?? "index.htm";
+static string defaultPage = GetEnvironmentVariable("DefaultPage") ?? "index.htm";
 static string root = GetEnvironmentVariable("Root");
 
 public static HttpResponseMessage Run(HttpRequestMessage req, TraceWriter log)

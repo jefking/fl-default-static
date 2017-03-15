@@ -15,11 +15,11 @@
                 "description": "Default web page to show when directory is accessed."
             }
         },
-        "Container": {
+        "root": {
             "type": "string",
-            "defaultValue": "www",
+            "defaultValue": "<ENTER SITE ROOT HERE>",
             "metadata": {
-                "description": "Default web page to show when directory is accessed."
+                "description": "Root of site/storage to rediect to default page."
             }
         }
     },
@@ -90,12 +90,8 @@
                             "value": "[parameters('defaultPage')]"
                         },
                         {
-                            "name": "Container",
-                            "value": "[parameters('Container')]"
-                        },
-                        {
-                            "name":"DataStore",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                            "name":"Root",
+                            "value": "[parameters('root')]"
                         }
                     ]
                 }
