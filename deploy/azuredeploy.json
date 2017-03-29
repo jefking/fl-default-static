@@ -17,7 +17,7 @@
         },
         "root": {
             "type": "string",
-            "defaultValue": "<ENTER SITE ROOT HERE>",
+            "defaultValue": "www",
             "metadata": {
                 "description": "Root of site/storage to rediect to default page."
             }
