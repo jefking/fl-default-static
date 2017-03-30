@@ -95,7 +95,6 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
             ],
-            "location": "[parameters('location')]",
             "kind": "functionapp"
         },
         {
