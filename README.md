@@ -13,7 +13,3 @@ Defaults to a 'page'; when a file is not specfied in URL. This helps with lessen
 - **DefaultPage** - index.htm
 - **Container** - Container which acts as root of the site (default: www)
 - **Storage** - Storage account from which to stream resources from.
-
-## Running Locally
-
-Visual Studio function app project is included. To run locally, create an `appsettings.json` file in the root of the function app. There is a sample included.
