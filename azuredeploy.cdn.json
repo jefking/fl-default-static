@@ -119,13 +119,13 @@
                     "apiVersion": "2016-04-02",
                     "dependsOn": [
                         "[variables('profileName')]",
-                        "[variables('siteName')]"
+                        "[parameters('siteName')]"
                     ],
                     "tags": {
                         "displayName": "[variables('endpointName')]"
                     },
                     "properties": {
-                        "originHostHeader": "[reference(variables('siteName')).hostNames[0]]",
+                        "originHostHeader": "[reference(parameters('siteName')).hostNames[0]]",
                         "isHttpAllowed": true,
                         "isHttpsAllowed": true,
                         "queryStringCachingBehavior": "IgnoreQueryString",
@@ -141,7 +141,7 @@
                             {
                                 "name": "origin1",
                                 "properties": {
-                                    "hostName": "[reference(variables('siteName')).hostNames[0]]"
+                                    "hostName": "[reference(parameters('siteName')).hostNames[0]]"
                                 }
                             }
                         ]
