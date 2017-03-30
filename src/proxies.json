@@ -4,7 +4,7 @@
             "matchCondition": {
                 "route": "{*path}"
             },
-            "backendUri": "https://%WEBSITE_SITE_NAME%.azurewebsites.net/api/StaticFileServer?file={path}"
+            "backendUri": "https://%WEBSITE_SITE_NAME%.azurewebsites.net/api/Static?file={path}"
         }
     }
 }
