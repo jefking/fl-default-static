@@ -15,7 +15,7 @@
                 "description": "Default web page to show when directory is accessed."
             }
         },
-        "root": {
+        "container": {
             "type": "string",
             "defaultValue": "www",
             "metadata": {
@@ -86,8 +86,8 @@
                             "value": "~1"
                         },
                         {
-                            "name":"Root",
-                            "value": "[parameters('root')]"
+                            "name":"Container",
+                            "value": "[parameters('container')]"
                         },
                         {
                             "name": "DefaultPage",
