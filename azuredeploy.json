@@ -1,11 +1,16 @@
 {
-    "$schema": "http://schemas.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
     "parameters": {
-        "appName": {
+        "siteName": {
             "type": "string",
             "metadata": {
                 "description": "The name of the function app that you wish to create."
+            }
+        },
+        "siteLocation": {
+            "type": "string",
+            "defaultValue": "West US",
+            "metadata": {
+                "description": "The location to use for creating the function app and hosting plan. It must be one of the Azure locations that support function apps."
             }
         },
         "defaultPage": {
@@ -24,55 +29,31 @@
         }
     },
     "variables": {
-        "functionAppName": "[parameters('appName')]",
-        "hostingPlanName": "[concat(parameters('appName'), '-plan')]",
-        "repoURL": "https://github.com/jefking/fl-default-static.git",
-        "branch": "master",
-        "contentShareName": "[toLower(parameters('appName'))]",
-        "storageName": "[concat(parameters('appName'), uniquestring(resourceGroup().id))]",
-        "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageName'))]"
+        "storageName": "[concat('function', uniqueString(parameters('siteName')))]",
+        "contentShareName": "[toLower(parameters('siteName'))]",
+        "repoUrl": "https://github.com/jefking/fl-default-static.git",
+        "branch": "master"
     },
     "resources": [
         {
-            "type": "Microsoft.Storage/storageAccounts",
-            "name": "[variables('storageName')]",
-            "apiVersion": "2015-06-15",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "accountType": "Standard_LRS"
-            }
-        },
-        {
-            "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2015-04-01",
-            "name": "[variables('hostingPlanName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "name": "[variables('hostingPlanName')]",
-                "computeMode": "Dynamic",
-                "sku": "Dynamic"
-            }
-        },
-        {
-            "apiVersion": "2015-04-01",
+            "apiVersion": "2016-03-01",
+            "name": "[parameters('siteName')]",
             "type": "Microsoft.Web/sites",
-            "name": "[variables('functionAppName')]",
-            "location": "[resourceGroup().location]",
-            "kind": "functionapp",
             "properties": {
-                "name": "[variables('functionAppName')]",
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-                "hostingEnvironment": "",
-                "clientAffinityEnabled": false,
+                "name": "[parameters('siteName')]",
                 "siteConfig": {
                     "appSettings": [
                         {
                             "name": "AzureWebJobsDashboard",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2015-05-01-preview').key1)]"
                         },
                         {
                             "name": "AzureWebJobsStorage",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~1"
                         },
                         {
                             "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
@@ -83,11 +64,11 @@
                             "value": "[variables('contentShareName')]"
                         },
                         {
-                            "name": "FUNCTIONS_EXTENSION_VERSION",
-                            "value": "~1"
+                            "name": "ROUTING_EXTENSION_VERSION",
+                            "value": "~0.1"
                         },
                         {
-                            "name":"Container",
+                            "name": "Container",
                             "value": "[parameters('container')]"
                         },
                         {
@@ -96,21 +77,19 @@
                         },
                         {
                             "name": "Storage",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2015-05-01-preview').key1)]"
                         }
                     ]
-                }
+                },
+                "clientAffinityEnabled": false
             },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
-            ],
             "resources": [
                 {
                     "apiVersion": "2015-08-01",
                     "name": "web",
                     "type": "sourcecontrols",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]"
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
                     ],
                     "properties": {
                         "RepoUrl": "[variables('repoURL')]",
@@ -118,7 +97,43 @@
                         "IsManualIntegration": true
                     }
                 }
+            ],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
+            ],
+            "location": "[parameters('siteLocation')]",
+            "kind": "functionapp"
+        },
+        {
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageName')]",
+            "location": "[parameters('siteLocation')]",
+            "properties": {
+                "accountType": "Standard_LRS"
+            },
+            "resources": [
+                {
+                    "type": "Microsoft.Storage/storageAccounts/providers/locks",
+                    "name": "[concat(variables('storageName'), '/Microsoft.Authorization/', variables('storageName'))]",
+                    "apiVersion": "2015-01-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Storage/storageAccounts/', variables('storageName'))]"
+                    ],
+                    "properties": {
+                        "level": "CannotDelete",
+                        "notes": "One or more function apps were linked to this storage account. You can see all the function apps linked to the account under 'files' or 'shares'."
+                    }
+                }
             ]
         }
-    ]
+    ],
+    "outputs": {
+        "siteUri": {
+            "type": "string",
+            "value": "[concat('https://',reference(resourceId('Microsoft.Web/sites', parameters('siteName'))).hostNames[0])]"
+        }
+    },
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0"
 }
