@@ -75,7 +75,11 @@
                         },
                         {
                             "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[variables('contentShareName')]"
                         },
                         {
                             "name": "FUNCTIONS_EXTENSION_VERSION",
