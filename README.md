@@ -7,6 +7,7 @@ Defaults to a 'page'; when a file is not specfied in URL. This helps with lessen
 
 ## Configuration
 
+You must create a Container in the storage account once this is created (default 'www'). Then upload your desired site (resources) to the Container.
 
 ## Application settings
 
