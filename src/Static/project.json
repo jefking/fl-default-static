@@ -1,5 +1,10 @@
 {
   "frameworks": {
-    "net46": { }
+    "net46": {
+      "dependencies": {
+        "MediaTypeMap": "2.1.0",
+        "King.Azure": "2.0.19"
+      }
     }
+  }
 }
