@@ -22,6 +22,7 @@
         }
     },
     "variables": {
+        "endpointName": "[concat('endpoint-', uniqueString(resourceGroup().id))]",
         "storageName": "[concat('function', uniqueString(parameters('siteName')))]",
         "contentShareName": "[toLower(parameters('siteName'))]",
         "profileName": "CdnProfile1",
