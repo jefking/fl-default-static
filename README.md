@@ -1,5 +1,5 @@
 # Server Default Static
-Defaults to a 'page'; when a file is not specfied in URL. This helps with lessening the need for compute on top of raw storage; if you are running static sites.
+Defaults page (index.htm) for containers. No need for compute on top of raw storage; if you are running static sites.
 
 ## Quick Deploy to Azure
 
